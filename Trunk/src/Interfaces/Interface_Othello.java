@@ -1,4 +1,6 @@
-public interface Inter_Othello {
+package Interfaces;
+
+public interface Interface_Othello {
 
 	/**
 	* Symbole correspondant aux pions du premier joueur
@@ -46,4 +48,5 @@ public interface Inter_Othello {
 	 * @return : Réponse à "Est-ce que la grille est pleine ?"
 	 */
 	boolean grillePleine();
+
 }
