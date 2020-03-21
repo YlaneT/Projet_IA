@@ -1,5 +1,7 @@
 import Interfaces.Interface_Jeu;
 
+//TODO : Implémenter les méthodes
+
 public class Jeu implements Interface_Jeu {
 
 	public Jeu (Othello othello){

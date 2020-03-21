@@ -1,5 +1,7 @@
 import Interfaces.Interface_Othello;
 
+//TODO : Implémenter les méthodes
+
 public class Othello implements Interface_Othello {
 
 	@Override
