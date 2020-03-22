@@ -40,5 +40,5 @@ public interface Interface_Jeu {
 	/**
 	 * Remplis un historique avec les résultats de chaque partie
 	 */
-	void remplirHistorique();
+	void remplirHistorique(char gagnant);
 }

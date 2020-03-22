@@ -33,10 +33,17 @@ public interface Interface_Othello {
 	void setSymbole(char symbole, int x, int y);
 
 	/**
+	 * @return true si le joueur peut placer un pion à une position donnée
+	 */
+	boolean peutJouer(int x, int y);
+
+	/**
 	 * Dans certains cas rares, un joueur ne peut pas jouer
 	 * @return : Information sur la possibilité de placer un pion
 	 */
 	boolean peutJouer();
+
+
 
 	/**
 	 * @param symbole : Joueur
