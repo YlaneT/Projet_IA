@@ -1,28 +1,32 @@
-package othello;
+package src.othello;
 
 public class Board {
-	Cell[][] cells;
+	public Cell[][] cells;
 	int ROWS, COLS, numBlack, numWhite;
 	
 	public Board(int row, int col) {
 		this.ROWS = row;
 		this.COLS = col;
 		cells = new Cell[ROWS][COLS];
-		for (int r = 0; r < ROWS; r++)
-			for (int c = 0; c < COLS; c++)
+		for (int r = 0; r < ROWS; r++) {
+			for (int c = 0; c < COLS; c++) {
 				cells[r][c] = new Cell(row, col);
+			}
+		}
 	}
 	
 	public void draw() {
 		System.out.print("    ");
-		for (int c = 0; c < COLS; c++)
-			System.out.print(c+1 + "\t");
+		for (int c = 0; c < COLS; c++) {
+			System.out.print(c + 1 + "\t");
+		}
 		System.out.println();
 		
 		for (int r = 0; r < ROWS; r++) {
 			System.out.print(r+1 + "\t");
-			for (int c = 0; c < COLS; c++)
+			for (int c = 0; c < COLS; c++) {
 				cells[r][c].draw();
+			}
 			System.out.println();
 		}
 		
@@ -33,19 +37,37 @@ public class Board {
 	
 	public int countBlacks() {
 		int count = 0;
-		for (int r = 0; r < ROWS; r++) 
-			for (int c = 0; c < COLS; c++)
-				if (cells[r][c].value == Value.BLACK)
+		for (int r = 0; r < ROWS; r++) {
+			for (int c = 0; c < COLS; c++) {
+				if (cells[r][c].value == Value.BLACK) {
 					count++;
+				}
+			}
+		}
 		return count;
 	}
 	
 	public int countWhites() {
 		int count = 0;
-		for (int r = 0; r < ROWS; r++) 
-			for (int c = 0; c < COLS; c++)
-				if (cells[r][c].value == Value.WHITE)
+		for (int r = 0; r < ROWS; r++) {
+			for (int c = 0; c < COLS; c++) {
+				if (cells[r][c].value == Value.WHITE) {
 					count++;
+				}
+			}
+		}
+		return count;
+	}
+	
+	public int countAll() {
+		int count = 0;
+		for (int r = 0; r < ROWS; r++) {
+			for (int c = 0; c < COLS; c++) {
+				if (cells[r][c].value != Value.BLANK) {
+					count++;
+				}
+			}
+		}
 		return count;
 	}
 	

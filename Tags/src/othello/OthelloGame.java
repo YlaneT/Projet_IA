@@ -1,17 +1,26 @@
-package othello;
+package src.othello;
 
+import java.util.StringTokenizer;
 import java.util.Scanner;
+import src.IA.*;
 
 public class OthelloGame {
 	private Board board;
 	private GameState state;
 	private Value turn;
+	private IA1 ia;
 	
 	private int ROWS;
 	private int COLS;
 
 	private static Scanner in = new Scanner(System.in);
 	
+	
+	/**
+	 * Crée une nouvelle partie de Othello en préparant le plateau de jeu
+	 * classic : si true, plateau de 8x8 et le premier joueur est BLACK,
+	 *  sinon, on peut choisir la taille du carré et le joueur qui commence
+	 */
 	public OthelloGame() {
 		boolean classic = true;
 		if (classic){
@@ -26,15 +35,18 @@ public class OthelloGame {
 		board = new Board(ROWS, COLS);
 		setBicoloredSquare();
 		state = GameState.IN_PROGRESS;
-		playGame();
+		
+		//Initialisation de l'IA
+		ia = new IA1(Value.BLACK, board);
 	}
+	
+	
 	public void setBicoloredSquare(){
 		board.cells[(ROWS/2)-1][(COLS/2)-1].set(Value.BLACK);
 		board.cells[ROWS/2][COLS/2].set(Value.BLACK);
 		board.cells[(ROWS/2)-1][COLS/2].set(Value.WHITE);
 		board.cells[ROWS/2][(COLS/2)-1].set(Value.WHITE);
 	}
-	
 	
 	
 	public void playGame() {
@@ -62,6 +74,7 @@ public class OthelloGame {
 		} while (state == GameState.IN_PROGRESS);
 	}
 	
+	
 	public void rejouer() {
 		String sc = in.next().substring(0,1);
 		if (sc.equalsIgnoreCase("y")) {
@@ -85,17 +98,26 @@ public class OthelloGame {
 		// TODO : Créer un log pour faire des statistiques
 	}
 	
+	
 	public void makeMove() {
 		boolean isValidInput = false;
 		
-		while (!isValidInput) {
-			int row = getBoundedNumber("Row", 1, ROWS);
-			int col = getBoundedNumber("Column", 1, COLS);
-			
-			if (tryToFlip(row, col, false)) 
-				isValidInput = true;
-			else 
-				System.out.println("Illegal move.");
+		if (turn == ia.getCouleur()) {
+			ia.maj_IA1();
+			String move = ia.jouerTour();
+			StringTokenizer st = new StringTokenizer(move,",");
+			int row = Integer.parseInt(st.nextToken());
+			int col = Integer.parseInt(st.nextToken());
+		}
+		
+		else {
+			while (!isValidInput) {
+				int row = getBoundedNumber("Row", 1, ROWS);
+				int col = getBoundedNumber("Column", 1, COLS);
+				
+				if (tryToFlip(row, col, false)) isValidInput = true;
+				else System.out.println("Illegal move.");
+			}
 		}
 	}
 	
@@ -108,13 +130,16 @@ public class OthelloGame {
 		return false;
 	}
 	
+	
 	public void putDisc(int row, int col, Value val) {
 		board.cells[row][col].set(val);
 	}
 	
+	
 	public void changeTurn() {
 		turn = (turn == Value.BLACK ? Value.WHITE : Value.BLACK);
 	}
+	
 	
 	public boolean tryToFlip(int row, int col, boolean dontFlip) {
 		boolean hasFlipped = false;
@@ -270,6 +295,7 @@ public class OthelloGame {
 		return hasFlipped;
 	}
 	
+	
 	public int getBoundedNumber(String what, int min, int max) {
 		boolean isValid = false;
 		
@@ -285,6 +311,7 @@ public class OthelloGame {
 		return -1; // never reached
 	}
 	
+	
 	public void setStartingPlayer() {
 		boolean isValidInput = false;
 		System.out.print("Who starts? ");
@@ -298,6 +325,7 @@ public class OthelloGame {
 			}
 		}
 	}
+	
 	
 	public void setRowsAndColumns() {
 		boolean isValidInput = false;
@@ -314,7 +342,14 @@ public class OthelloGame {
 		}
 	}
 	
-	public static void main(String[] args) {
-		new OthelloGame();
+	
+	public Board getBoard () {
+		return board;
+	}
+	public int getROWS () {
+		return ROWS;
+	}
+	public int getCOLS () {
+		return COLS;
 	}
 }

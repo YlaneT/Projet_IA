@@ -1,7 +1,7 @@
-package othello;
+package src.othello;
 
 public class Cell {
-	Value value;
+	public Value value;
 	int row, col;
 	
 	public Cell(int r, int c) {
