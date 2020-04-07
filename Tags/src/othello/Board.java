@@ -1,6 +1,6 @@
 package src.othello;
 
-public class Board {
+public class Board implements Cloneable {
 	public Cell[][] cells;
 	int ROWS, COLS, numBlack, numWhite;
 	
@@ -59,11 +59,11 @@ public class Board {
 		return count;
 	}
 	
-	public int countAll() {
+	public int countColor(Value couleur) {
 		int count = 0;
 		for (int r = 0; r < ROWS; r++) {
 			for (int c = 0; c < COLS; c++) {
-				if (cells[r][c].value != Value.BLANK) {
+				if (cells[r][c].value == couleur) {
 					count++;
 				}
 			}

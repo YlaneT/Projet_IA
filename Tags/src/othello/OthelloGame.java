@@ -37,7 +37,7 @@ public class OthelloGame {
 		state = GameState.IN_PROGRESS;
 		
 		//Initialisation de l'IA
-		ia = new IA1(Value.BLACK, board);
+		ia = new IA1(Value.BLACK, this);
 	}
 	
 	
@@ -351,5 +351,8 @@ public class OthelloGame {
 	}
 	public int getCOLS () {
 		return COLS;
+	}
+	public Value getTurn() {
+		return turn;
 	}
 }
