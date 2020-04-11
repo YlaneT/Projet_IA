@@ -1,14 +1,16 @@
-package src.othello;
+package othello;
 
 import java.util.StringTokenizer;
 import java.util.Scanner;
-import src.IA.*;
+import IA.*;
 
 public class OthelloGame {
-	private Board board;
+	
 	private GameState state;
+	private Board board;
 	private Value turn;
 	private IA1 ia;
+	private String nomIa;
 	
 	private int ROWS;
 	private int COLS;
@@ -22,7 +24,9 @@ public class OthelloGame {
 	 *  sinon, on peut choisir la taille du carré et le joueur qui commence
 	 */
 	public OthelloGame() {
-		boolean classic = true;
+		boolean classic = false;
+		
+		// Initialisation du board
 		if (classic){
 			ROWS = 8;
 			COLS = 8;
@@ -36,8 +40,9 @@ public class OthelloGame {
 		setBicoloredSquare();
 		state = GameState.IN_PROGRESS;
 		
-		//Initialisation de l'IA
-		ia = new IA1(Value.BLACK, this);
+		// Initialisation de l'IA
+		ia = new IA1(Value.WHITE, this);
+		this.nomIa = ia.getClass().toString();
 	}
 	
 	
@@ -63,7 +68,9 @@ public class OthelloGame {
 					if (!canPlay()){
 						determineWinner();
 					}
-					System.out.println("It is " + turn + "'s turn again.");
+					else {
+						System.out.println("It is " + turn + "'s turn again.");
+					}
 				}
 			}
 			else {
@@ -94,8 +101,8 @@ public class OthelloGame {
 			state = GameState.DRAW;
 			System.out.println("It's a draw!");
 		}
-		rejouer();
 		// TODO : Créer un log pour faire des statistiques
+		rejouer();
 	}
 	
 	
@@ -104,10 +111,12 @@ public class OthelloGame {
 		
 		if (turn == ia.getCouleur()) {
 			ia.maj_IA1();
-			String move = ia.jouerTour();
-			StringTokenizer st = new StringTokenizer(move,",");
-			int row = Integer.parseInt(st.nextToken());
-			int col = Integer.parseInt(st.nextToken());
+			int [] move ;
+			move = ia.jouerTour();
+			
+			int row = move[0];
+			int col = move[1];
+			tryToFlip(row,col,false);
 		}
 		
 		else {

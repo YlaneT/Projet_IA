@@ -1,4 +1,4 @@
-package src.othello;
+package othello;
 
 public enum Value {
 	BLACK, WHITE, BLANK

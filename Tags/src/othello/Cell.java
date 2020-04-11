@@ -1,4 +1,4 @@
-package src.othello;
+package othello;
 
 public class Cell {
 	public Value value;

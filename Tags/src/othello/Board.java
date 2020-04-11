@@ -1,8 +1,9 @@
-package src.othello;
+package othello;
 
 public class Board implements Cloneable {
 	public Cell[][] cells;
 	int ROWS, COLS, numBlack, numWhite;
+	
 	
 	public Board(int row, int col) {
 		this.ROWS = row;
@@ -34,6 +35,7 @@ public class Board implements Cloneable {
 		numWhite = countWhites();
 		System.out.format("%nBlack: %d%nWhite: %d%n%n", numBlack, numWhite);
 	}
+	
 	
 	public int countBlacks() {
 		int count = 0;
@@ -71,6 +73,7 @@ public class Board implements Cloneable {
 		return count;
 	}
 	
+	
 	public boolean fullGrid(){
 		for (int i=0; i<ROWS; i++) {
 			for (int j=0; j<COLS; j++) {
@@ -81,4 +84,21 @@ public class Board implements Cloneable {
 		}
 		return true;
 	}
+	
+	
+	public Object clone() {
+		Object o = null;
+		try {
+			// On récupère l'instance à renvoyer par l'appel de la
+			// méthode super.clone()
+			o = super.clone();
+		} catch(CloneNotSupportedException cnse) {
+			// Ne devrait jamais arriver car nous implémentons
+			// l'interface Cloneable
+			cnse.printStackTrace(System.err);
+		}
+		// on renvoie le clone
+		return o;
+	}
+	
 }
