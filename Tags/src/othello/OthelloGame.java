@@ -1,6 +1,5 @@
 package othello;
 
-import java.util.StringTokenizer;
 import java.util.Scanner;
 import IA.*;
 
@@ -41,7 +40,6 @@ public class OthelloGame implements Cloneable {
 		
 		// Initialisation de l'IA
 		ia = new IA1(Value.WHITE, this);
-		// this.nomIa = ia.getClass().toString();
 	}
 	
 	public OthelloGame(OthelloGame game) {
@@ -98,7 +96,7 @@ public class OthelloGame implements Cloneable {
 	}
 	
 	
-	public void rejouer() {
+	public void replay () {
 		String sc = in.next().substring(0,1);
 		if (sc.equalsIgnoreCase("y")) {
 			new OthelloGame();
@@ -118,16 +116,16 @@ public class OthelloGame implements Cloneable {
 			System.out.println("It's a draw!");
 		}
 		// TODO : Créer un log pour faire des statistiques
-		rejouer();
+		replay();
 	}
 	
 	
 	public void makeMove() {
 		boolean isValidInput = false;
 		
-		if (turn == ia.getCouleur()) {
+		if (turn == ia.getIa_color()) {
 			ia.maj_IA1();
-			int [] move = ia.jouerTour();
+			int [] move = ia.playTurn();
 			
 			int row = move[0];
 			int col = move[1];
@@ -341,7 +339,7 @@ public class OthelloGame implements Cloneable {
 			if (choice%2 == 0) {
 				isValidInput = true;
 				ROWS = choice;
-				COLS = choice-2; // fixme : le -2 était juste pour le test "only choice"
+				COLS = choice;
 			} else {
 				System.out.println("Must be an even integer.");
 			}

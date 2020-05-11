@@ -6,13 +6,12 @@ public class Board {
 	
 	
 	public Board(int row, int col) {
-		// this.ROWS = row;
-		// this.COLS = col;
-		cells = new Cell[ROWS][COLS]; // fixme ? une seule colonne : Cell[4][]
+		this.ROWS = row;
+		this.COLS = col;
+		cells = new Cell[ROWS][COLS];
 		for (int r = 0; r < ROWS; r++) {
 			for (int c = 0; c < COLS; c++) {
-				// cells[r][c] = new Cell(row, col); fixed ?
-				cells[r][c] = new Cell(r, c);
+				cells[r][c] = new Cell(row, col);
 			}
 		}
 	}
@@ -23,8 +22,8 @@ public class Board {
 		cells = new Cell[ROWS][COLS];
 		for (int r = 0; r < this.ROWS; r++) {
 			for (int c = 0; c < this.COLS; c++) {
-				cells[r][c] = new Cell(r, c);
-				cells[r][c].set(board.cells[r][c].value);
+				this.cells[r][c] = new Cell(ROWS, COLS);
+				this.cells[r][c].set(board.cells[r][c].value);
 			}
 		}
 	}
