@@ -26,26 +26,25 @@ public class IA1 {
 	}
 	
 	public void maj_IA1 (){
-		Choix.setGame(game);
+		choix_possibles.clear();
+		this.nb_pions_avant = game.getBoard().getColor(this.couleur);
 		rchChoix();
-		this.nb_pions_avant = game.getBoard().countColor(this.couleur);
 	}
 	
 	private void rchChoix () {
-		choix_possibles.clear();
-		for (int r = 0; r < game.getROWS(); r++){
-			for (int c = 0; c < game.getCOLS(); c++){
-				Board board_copy = (Board) game.getBoard().clone();
-				if (board_copy.cells[r][c].value == Value.BLANK && game.tryToFlip(r, c, true)) {
-					Choix choix = new Choix(r, c);
-					choix.setValeur_IA1(this.nb_pions_avant);
-					choix_possibles.add(choix);
+		for (int r = 0 ; r < game.getROWS(); r++){
+			for (int c = 0 ; c < game.getCOLS(); c++){
+				if (game.getBoard().cells[r][c].value == Value.BLANK && game.tryToFlip(r, c, true)) {
+					choix_possibles.add(new Choix(r, c, this.nb_pions_avant));
+					// TEST
+					System.out.println("+++++++++++++++\nAffichage du vrai plateau");
+					game.getBoard().draw();
+					System.out.println("+++++++++++++++");
 				}
 			}
 		}
 	}
 	
-	/**/
 	
 	/**
 	 * Retourne le meilleur coup et privilégie les coins dans les cas d'égalités d'utilités
@@ -54,36 +53,25 @@ public class IA1 {
 	public Choix meilleurCoup() {
 		int max = 0 ;
 		ArrayList<Integer> start_end = new ArrayList<Integer>();
-		start_end.add(1);
-		start_end.add(game.getROWS());
-		
-		for (Choix choix : choix_possibles) {
-			if (choix.getValeur() < max) {
-				choix_possibles.remove(choix);
-			}
-			else if (choix.getValeur() > max) {
-				max = choix.getValeur();
-			}
-		}
+		start_end.add(0);
+		start_end.add(game.getROWS()-1);
 		if (choix_possibles.size() == 1) {
-			Choix choix = choix_possibles.get(0);
-			return choix;
+			return choix_possibles.get(0);
 		}
-		else {
-			for (Choix choix : choix_possibles) {
-				if (choix.getValeur() < max) {
-					choix_possibles.remove(choix);
-				}
-				else if (start_end.contains(choix.getPosition()[0])) {
-					if (start_end.contains(choix.getPosition()[1])) {
-						return choix;
-					}
-					
+		
+		for (int i = 0 ; i < choix_possibles.size() ; i++) {
+			if (choix_possibles.get(i).getValeur() > max) {
+				max = choix_possibles.get(i).getValeur();
+			}
+		}
+		for (int i = 0 ; i < choix_possibles.size() ; i++) {
+			if (choix_possibles.get(i).getValeur() == max && start_end.contains(choix_possibles.get(i).getPosition()[0])) {
+				if (start_end.contains(choix_possibles.get(i).getPosition()[1])) {
+					return choix_possibles.get(i);
 				}
 			}
 		}
-		System.out.println(choix_possibles.get(0));
-		return choix_possibles.get(0);
+		return choix_possibles.get(0); // fixme : on enlève plus les éléments dont la val =/= max
 	}
 	
 	public int [] jouerTour() {

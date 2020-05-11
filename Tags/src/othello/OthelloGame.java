@@ -4,19 +4,18 @@ import java.util.StringTokenizer;
 import java.util.Scanner;
 import IA.*;
 
-public class OthelloGame {
+public class OthelloGame implements Cloneable {
 	
 	private GameState state;
 	private Board board;
 	private Value turn;
 	private IA1 ia;
-	private String nomIa;
+	// private String nomIa; // pourra être utile pour le log utilisation dans Constructeur
 	
 	private int ROWS;
 	private int COLS;
 
 	private static Scanner in = new Scanner(System.in);
-	
 	
 	/**
 	 * Crée une nouvelle partie de Othello en préparant le plateau de jeu
@@ -42,9 +41,26 @@ public class OthelloGame {
 		
 		// Initialisation de l'IA
 		ia = new IA1(Value.WHITE, this);
-		this.nomIa = ia.getClass().toString();
+		// this.nomIa = ia.getClass().toString();
 	}
 	
+	public OthelloGame(OthelloGame game) {
+		this.state = game.getState();
+		this.board = new Board(game.getBoard());
+		this.turn = game.getTurn();
+		// private String nomIa; // pourra être utile pour le log utilisation dans Constructeur
+		
+		this.ROWS = game.getROWS();
+		this.COLS = game.getCOLS();
+		
+		this.in = new Scanner(System.in);
+		
+		
+	}
+	
+	private GameState getState () {
+		return this.state;
+	}
 	
 	public void setBicoloredSquare(){
 		board.cells[(ROWS/2)-1][(COLS/2)-1].set(Value.BLACK);
@@ -111,8 +127,7 @@ public class OthelloGame {
 		
 		if (turn == ia.getCouleur()) {
 			ia.maj_IA1();
-			int [] move ;
-			move = ia.jouerTour();
+			int [] move = ia.jouerTour();
 			
 			int row = move[0];
 			int col = move[1];
@@ -163,15 +178,15 @@ public class OthelloGame {
 				int currentRow = row;
 				do {
 					next = board.cells[--currentRow][col].value;
-					if (next == opposite) { 
+					if (next == opposite) {
 						neighborIsOpposite= true;
 					} else if (next == turn && neighborIsOpposite) {
-						if (dontFlip)	
+						if (dontFlip)
 							return true;
 						hasFlipped = true;
-						for (int r = row; r > currentRow ; r--)  
+						for (int r = row; r > currentRow ; r--)
 							putDisc(r, col, turn);
-					} 
+					}
 				} while (currentRow-1 >= 0 && next != Value.BLANK);
 			}
 			
@@ -181,13 +196,13 @@ public class OthelloGame {
 				int currentRow = row, currentCol = col;
 				do {
 					next = board.cells[--currentRow][++currentCol].value;
-					if (next == opposite) { 
+					if (next == opposite) {
 						neighborIsOpposite= true;
-					} else if (next == turn && neighborIsOpposite) { 
-						if (dontFlip)	
+					} else if (next == turn && neighborIsOpposite) {
+						if (dontFlip)
 							return true;
 						hasFlipped = true;
-						for (int r = row, c = col; r > currentRow && c < currentCol ; r--, c++)  
+						for (int r = row, c = col; r > currentRow && c < currentCol ; r--, c++)
 							putDisc(r, c, turn);
 					}
 				} while (currentRow-1 >= 0 && currentCol < COLS-1 && next != Value.BLANK);
@@ -199,13 +214,13 @@ public class OthelloGame {
 				int currentCol = col;
 				do {
 					next = board.cells[row][++currentCol].value;
-					if (next == opposite) { 
+					if (next == opposite) {
 						neighborIsOpposite= true;
-					} else if (next == turn && neighborIsOpposite) { 
-						if (dontFlip)	
+					} else if (next == turn && neighborIsOpposite) {
+						if (dontFlip)
 							return true;
 						hasFlipped = true;
-						for (int c = col; c < currentCol; c++)  
+						for (int c = col; c < currentCol; c++)
 							putDisc(row, c, turn);
 					}
 				} while (currentCol < COLS-1 && next != Value.BLANK);
@@ -217,13 +232,13 @@ public class OthelloGame {
 				int currentRow = row, currentCol = col;
 				do {
 					next = board.cells[++currentRow][++currentCol].value;
-					if (next == opposite) { 
+					if (next == opposite) {
 						neighborIsOpposite= true;
-					} else if (next == turn && neighborIsOpposite) { 
-						if (dontFlip)	
+					} else if (next == turn && neighborIsOpposite) {
+						if (dontFlip)
 							return true;
 						hasFlipped = true;
-						for (int r = row, c = col; r < currentRow && c < currentCol ; r++, c++)  
+						for (int r = row, c = col; r < currentRow && c < currentCol ; r++, c++)
 							putDisc(r, c, turn);
 					}
 				} while (currentRow < ROWS-1 && currentCol < COLS-1 && next != Value.BLANK);
@@ -235,13 +250,13 @@ public class OthelloGame {
 				int currentRow = row;
 				do {
 					next = board.cells[++currentRow][col].value;
-					if (next == opposite) { 
+					if (next == opposite) {
 						neighborIsOpposite= true;
-					} else if (next == turn && neighborIsOpposite) { 
-						if (dontFlip)	
+					} else if (next == turn && neighborIsOpposite) {
+						if (dontFlip)
 							return true;
 						hasFlipped = true;
-						for (int r = row; r < currentRow; r++)  
+						for (int r = row; r < currentRow; r++)
 							putDisc(r, col, turn);
 					}
 				} while (currentRow < ROWS-1 && next != Value.BLANK);
@@ -253,13 +268,13 @@ public class OthelloGame {
 				int currentRow = row, currentCol = col;
 				do {
 					next = board.cells[++currentRow][--currentCol].value;
-					if (next == opposite) { 
+					if (next == opposite) {
 						neighborIsOpposite= true;
-					} else if (next == turn && neighborIsOpposite) { 
-						if (dontFlip)	
+					} else if (next == turn && neighborIsOpposite) {
+						if (dontFlip)
 							return true;
 						hasFlipped = true;
-						for (int r = row, c = col; r < currentRow && c > currentCol; r++, c--) 
+						for (int r = row, c = col; r < currentRow && c > currentCol; r++, c--)
 							putDisc(r, c, turn);
 					}
 				} while (currentRow < ROWS-1 && currentCol > 0 && next != Value.BLANK);
@@ -271,13 +286,13 @@ public class OthelloGame {
 				int currentCol = col;
 				do {
 					next = board.cells[row][--currentCol].value;
-					if (next == opposite) { 
+					if (next == opposite) {
 						neighborIsOpposite= true;
-					} else if (next == turn && neighborIsOpposite) { 
-						if (dontFlip)	
+					} else if (next == turn && neighborIsOpposite) {
+						if (dontFlip)
 							return true;
 						hasFlipped = true;
-						for (int c = col; c > currentCol; c--) 
+						for (int c = col; c > currentCol; c--)
 							putDisc(row, c, turn);
 					}
 				} while (currentCol > 0 && next != Value.BLANK);
@@ -289,35 +304,19 @@ public class OthelloGame {
 				int currentRow = row, currentCol = col;
 				do {
 					next = board.cells[--currentRow][--currentCol].value;
-					if (next == opposite) { 
+					if (next == opposite) {
 						neighborIsOpposite= true;
-					} else if (next == turn && neighborIsOpposite) { 
-						if (dontFlip)	
+					} else if (next == turn && neighborIsOpposite) {
+						if (dontFlip)
 							return true;
 						hasFlipped = true;
-						for (int r = row, c = col; r > currentRow && c > currentCol; r--, c--) 
+						for (int r = row, c = col; r > currentRow && c > currentCol; r--, c--)
 							putDisc(r, c, turn);
 					}
 				} while (currentRow > 0 && currentCol > 0 && next != Value.BLANK);
 			}
 		}
 		return hasFlipped;
-	}
-	
-	
-	public int getBoundedNumber(String what, int min, int max) {
-		boolean isValid = false;
-		
-		do {
-			System.out.print(what + ": ");
-			int num = in.nextInt() - 1;
-			if (num+1 < min || num+1 > max)
-				System.out.format("Invalid input. %s must be between 1 and %d inclusive.\n", what, max);
-			else
-				return num;
-		
-		} while (!isValid);
-		return -1; // never reached
 	}
 	
 	
@@ -334,8 +333,6 @@ public class OthelloGame {
 			}
 		}
 	}
-	
-	
 	public void setRowsAndColumns() {
 		boolean isValidInput = false;
 		while (!isValidInput) {
@@ -344,13 +341,25 @@ public class OthelloGame {
 			if (choice%2 == 0) {
 				isValidInput = true;
 				ROWS = choice;
-				COLS = choice;
+				COLS = choice-2; // fixme : le -2 était juste pour le test "only choice"
 			} else {
 				System.out.println("Must be an even integer.");
 			}
 		}
 	}
 	
+	
+	public int getBoundedNumber(String what, int min, int max) {
+		// boolean isValid = false;
+		do {
+			System.out.print(what + ": ");
+			int num = in.nextInt() - 1;
+			if (num+1 < min || num+1 > max)
+				System.out.format("Invalid input. %s must be between 1 and %d inclusive.\n", what, max);
+			else
+				return num;
+		} while (true); // while (!isValid)
+	}
 	
 	public Board getBoard () {
 		return board;
@@ -363,5 +372,21 @@ public class OthelloGame {
 	}
 	public Value getTurn() {
 		return turn;
+	}
+	
+	
+	public Object clone() {
+		Object o = null;
+		try {
+			// On récupère l'instance à renvoyer par l'appel de la
+			// méthode super.clone()
+			o = super.clone();
+		} catch(CloneNotSupportedException cnse) {
+			// Ne devrait jamais arriver car nous implémentons
+			// l'interface Cloneable
+			cnse.printStackTrace(System.err);
+		}
+		// on renvoie le clone
+		return o;
 	}
 }

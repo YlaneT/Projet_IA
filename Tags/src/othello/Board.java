@@ -1,17 +1,30 @@
 package othello;
 
-public class Board implements Cloneable {
+public class Board {
 	public Cell[][] cells;
 	int ROWS, COLS, numBlack, numWhite;
 	
 	
 	public Board(int row, int col) {
-		this.ROWS = row;
-		this.COLS = col;
-		cells = new Cell[ROWS][COLS];
+		// this.ROWS = row;
+		// this.COLS = col;
+		cells = new Cell[ROWS][COLS]; // fixme ? une seule colonne : Cell[4][]
 		for (int r = 0; r < ROWS; r++) {
 			for (int c = 0; c < COLS; c++) {
-				cells[r][c] = new Cell(row, col);
+				// cells[r][c] = new Cell(row, col); fixed ?
+				cells[r][c] = new Cell(r, c);
+			}
+		}
+	}
+	
+	public Board (Board board) {
+		ROWS = board.ROWS;
+		COLS = board.COLS;
+		cells = new Cell[ROWS][COLS];
+		for (int r = 0; r < this.ROWS; r++) {
+			for (int c = 0; c < this.COLS; c++) {
+				cells[r][c] = new Cell(r, c);
+				cells[r][c].set(board.cells[r][c].value);
 			}
 		}
 	}
@@ -19,7 +32,7 @@ public class Board implements Cloneable {
 	public void draw() {
 		System.out.print("    ");
 		for (int c = 0; c < COLS; c++) {
-			System.out.print(c + 1 + "\t");
+			System.out.print(c+1 + "\t");
 		}
 		System.out.println();
 		
@@ -73,6 +86,14 @@ public class Board implements Cloneable {
 		return count;
 	}
 	
+	public int getColor(Value couleur) {
+		if (couleur == Value.BLACK) {
+			return this.numBlack;
+		}
+		else {
+			return this.numWhite;
+		}
+	}
 	
 	public boolean fullGrid(){
 		for (int i=0; i<ROWS; i++) {
@@ -83,22 +104,6 @@ public class Board implements Cloneable {
 			}
 		}
 		return true;
-	}
-	
-	
-	public Object clone() {
-		Object o = null;
-		try {
-			// On récupère l'instance à renvoyer par l'appel de la
-			// méthode super.clone()
-			o = super.clone();
-		} catch(CloneNotSupportedException cnse) {
-			// Ne devrait jamais arriver car nous implémentons
-			// l'interface Cloneable
-			cnse.printStackTrace(System.err);
-		}
-		// on renvoie le clone
-		return o;
 	}
 	
 }
