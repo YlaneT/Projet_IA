@@ -25,7 +25,6 @@ public class IA1 {
 	
 	public void maj_IA1 (){
 		choices_available.clear();
-		research_Choices();
 	}
 	
 	private void research_Choices () {
