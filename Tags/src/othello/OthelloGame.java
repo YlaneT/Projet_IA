@@ -8,7 +8,8 @@ public class OthelloGame implements Cloneable {
 	private GameState state;
 	private Board board;
 	private Value turn;
-	private IA1 ia;
+	private Intelligences_Artificielles ia;
+	private Intelligences_Artificielles ia1;
 	// private String nomIa; // pourra être utile pour le log utilisation dans Constructeur
 	
 	private int ROWS;
@@ -39,7 +40,8 @@ public class OthelloGame implements Cloneable {
 		state = GameState.IN_PROGRESS;
 		
 		// Initialisation de l'IA
-		ia = new IA1(Value.WHITE, this);
+		ia = new Intelligences_Artificielles(Value.WHITE, this);
+		ia1 = new Intelligences_Artificielles(Value.BLACK, this);
 	}
 	
 	public OthelloGame(OthelloGame game) {
@@ -124,15 +126,24 @@ public class OthelloGame implements Cloneable {
 		boolean isValidInput = false;
 		
 		if (turn == ia.getIa_color()) {
-			ia.maj_IA1();
+			ia.maj_IA();
 			int [] move = ia.playTurn();
 			
 			int row = move[0];
 			int col = move[1];
 			tryToFlip(row,col,false);
 		}
-		
-		else {
+		/*
+		else if (turn == ia1.getIa_color()) {
+			ia1.maj_IA();
+			int [] move = ia.playTurn();
+			
+			int row = move[0];
+			int col = move[1];
+			tryToFlip(row,col,false);
+		}
+		 */
+		else { // Tour de l'humain
 			while (!isValidInput) {
 				int row = getBoundedNumber("Row", 1, ROWS);
 				int col = getBoundedNumber("Column", 1, COLS);
@@ -143,7 +154,9 @@ public class OthelloGame implements Cloneable {
 		}
 	}
 	
-	// determines if the current player can make a move somewhere.
+	/**
+	 * @return if the current player can make a move somewhere.
+	 */
 	public boolean canPlay() {
 		for (int r = 0; r < ROWS; r++)
 			for (int c = 0; c < COLS; c++)

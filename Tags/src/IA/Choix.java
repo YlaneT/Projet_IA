@@ -14,12 +14,23 @@ public class Choix {
 	 * @param r : ligne 
 	 * @param c : colonne
 	 */
-	public Choix (int r, int c, Board board_before) {
+	public Choix (int r, int c, int numIA) {
 		this.position = new int [2];
 		this.position[0] = r;
 		this.position[1] = c;
 		this.game_copy = new OthelloGame(Choix.game);
-		this.setValue_IA1();
+		switch (numIA) {
+			case 1 :
+				this.setValue_IA1();
+				break;
+			case 2 :
+				this.setValue_IA2();
+				break;
+			case 3 :
+				this.setValue_IA3();
+				break;
+		}
+		
 	}
 	
 	public int[] getPosition () {
@@ -31,7 +42,24 @@ public class Choix {
 	}
 	
 	public void setValue_IA1 () {
-		int val;
+		int row = this.position[0];
+		int col = this.position[1];
+		
+		this.game_copy.tryToFlip(row,col,false);
+		
+		this.value = game_copy.getBoard().countColor(game_copy.getTurn());
+	}
+	
+	public void setValue_IA2 () {
+		int row = this.position[0];
+		int col = this.position[1];
+		
+		this.game_copy.tryToFlip(row,col,false);
+		
+		this.value = game_copy.getBoard().countColor(game_copy.getTurn());
+	}
+	
+	public void setValue_IA3 () {
 		int row = this.position[0];
 		int col = this.position[1];
 		

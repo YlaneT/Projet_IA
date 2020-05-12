@@ -85,15 +85,6 @@ public class Board {
 		return count;
 	}
 	
-	public int getColor(Value couleur) {
-		if (couleur == Value.BLACK) {
-			return this.numBlack;
-		}
-		else {
-			return this.numWhite;
-		}
-	}
-	
 	public boolean fullGrid(){
 		for (int i=0; i<ROWS; i++) {
 			for (int j=0; j<COLS; j++) {

@@ -10,28 +10,48 @@ import othello.*;
  * Prendre un coin +5
  * N pions en plus par rapport au tour précédent +N
  */
-public class IA1 {
+public class Intelligences_Artificielles {
 
 	private ArrayList <Choix> choices_available;
 	private Value ia_color;
 	private OthelloGame game;
 	
-	public IA1 (Value ia_color, OthelloGame game) {
+	public Intelligences_Artificielles (Value ia_color, OthelloGame game) {
 		this.choices_available = new ArrayList<>();
 		this.ia_color = ia_color;
 		this.game = game;
 		Choix.setGame(game);
 	}
 	
-	public void maj_IA1 (){
+	public void maj_IA (){
 		choices_available.clear();
 	}
 	
-	private void research_Choices () {
+	private void rsch_choices_IA1 () {
 		for (int r = 0 ; r < game.getROWS(); r++){
 			for (int c = 0 ; c < game.getCOLS(); c++){
 				if (game.getBoard().cells[r][c].value == Value.BLANK && game.tryToFlip(r, c, true)) {
-					choices_available.add(new Choix(r, c, game.getBoard()));
+					choices_available.add(new Choix(r, c,1));
+				}
+			}
+		}
+	}
+	
+	private void rsch_choices_IA2 () {
+		for (int r = 0 ; r < game.getROWS(); r++){
+			for (int c = 0 ; c < game.getCOLS(); c++){
+				if (game.getBoard().cells[r][c].value == Value.BLANK && game.tryToFlip(r, c, true)) {
+					choices_available.add(new Choix(r, c,2));
+				}
+			}
+		}
+	}
+	
+	private void rsch_choices_IA3 () {
+		for (int r = 0 ; r < game.getROWS(); r++){
+			for (int c = 0 ; c < game.getCOLS(); c++){
+				if (game.getBoard().cells[r][c].value == Value.BLANK && game.tryToFlip(r, c, true)) {
+					choices_available.add(new Choix(r, c,3));
 				}
 			}
 		}
@@ -61,20 +81,29 @@ public class IA1 {
 			if (choices_available.get(i).getValue() > max) {
 				max = choices_available.get(i).getValue();
 			}
-		}
-		for (int i = 0; i < choices_available.size() ; i++) {
-			if (choices_available.get(i).getValue() == max && start_end.contains(choices_available.get(i).getPosition()[0])) {
-				if (start_end.contains(choices_available.get(i).getPosition()[1])) {
-					return choices_available.get(i);
-				}
+			else {
+				choices_available.remove(i);
 			}
 		}
-		return choices_available.get(0); // fixme : on enlève plus les éléments dont la val =/= max
+		
+		for (int i = 0; i < choices_available.size() ; i++) {
+			if (choices_available.get(i).getValue() == max ){
+				if (start_end.contains(choices_available.get(i).getPosition()[0])) {
+					if (start_end.contains(choices_available.get(i).getPosition()[1])) {
+						return choices_available.get(i);
+					}
+				}
+			}
+			else {
+				choices_available.remove(i);
+			}
+		}
+		return choices_available.get(0);
 	}
 	
 	public int [] playTurn () {
-		maj_IA1();
-		research_Choices();
+		maj_IA();
+		rsch_choices_IA1();
 		show_choices();
 		return best_move().getPosition();
 	}
