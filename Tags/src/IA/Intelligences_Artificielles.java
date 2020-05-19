@@ -69,13 +69,14 @@ public class Intelligences_Artificielles {
 	 * @return le meilleur coup sous forme r,c
 	 */
 	public Choix best_move () {
+		if (choices_available.size() == 1) {
+			return choices_available.get(0);
+		}
+		
 		int max = 0 ;
 		ArrayList<Integer> start_end = new ArrayList<Integer>();
 		start_end.add(0);
 		start_end.add(game.getROWS()-1);
-		if (choices_available.size() == 1) {
-			return choices_available.get(0);
-		}
 		
 		for (int i = 0; i < choices_available.size() ; i++) {
 			if (choices_available.get(i).getValue() > max) {

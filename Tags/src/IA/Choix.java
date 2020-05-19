@@ -41,6 +41,7 @@ public class Choix {
 		return value;
 	}
 	
+	// Joue le pion puis compte le nombre de pions de sa couleur.
 	public void setValue_IA1 () {
 		int row = this.position[0];
 		int col = this.position[1];
@@ -50,6 +51,10 @@ public class Choix {
 		this.value = game_copy.getBoard().countColor(game_copy.getTurn());
 	}
 	
+	/* Joue le pion,
+	   cherche les choix possibles du joueur adverse
+	   calcule leur utilité en faisant 100-util_IA1
+	 */
 	public void setValue_IA2 () {
 		int row = this.position[0];
 		int col = this.position[1];
