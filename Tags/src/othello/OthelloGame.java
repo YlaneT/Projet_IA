@@ -99,10 +99,15 @@ public class OthelloGame implements Cloneable {
 	
 	
 	public void replay () {
+	System.out.println("Voulez-vous rejouer ?");
 		String sc = in.next().substring(0,1);
 		if (sc.equalsIgnoreCase("y")) {
-			new OthelloGame();
+			new OthelloGame().playGame();
 		}
+		else {
+			System.exit(0);
+		}
+		
 	}
 	
 	

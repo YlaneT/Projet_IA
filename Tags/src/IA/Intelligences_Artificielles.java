@@ -60,7 +60,7 @@ public class Intelligences_Artificielles {
 	private void show_choices () {
 		System.out.println("Choix possibles :");
 		for (Choix c : choices_available) {
-			System.out.println(c.textPosition() + " : " + c.getValue());
+			System.out.println(c);
 		}
 	}
 	
@@ -79,11 +79,12 @@ public class Intelligences_Artificielles {
 		start_end.add(game.getROWS()-1);
 		
 		for (int i = 0; i < choices_available.size() ; i++) {
-			if (choices_available.get(i).getValue() > max) {
+			if (choices_available.get(i).getValue() >= max) {
 				max = choices_available.get(i).getValue();
 			}
 			else {
 				choices_available.remove(i);
+				i--;
 			}
 		}
 		
@@ -97,6 +98,7 @@ public class Intelligences_Artificielles {
 			}
 			else {
 				choices_available.remove(i);
+				i--;
 			}
 		}
 		return choices_available.get(0);
@@ -106,7 +108,9 @@ public class Intelligences_Artificielles {
 		maj_IA();
 		rsch_choices_IA1();
 		show_choices();
-		return best_move().getPosition();
+		Choix best = best_move();
+		System.out.println("Meilleur coup : " + best);
+		return best.getPosition();
 	}
 	
 	public Value getIa_color (){

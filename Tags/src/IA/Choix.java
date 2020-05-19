@@ -81,4 +81,8 @@ public class Choix {
 	public String textPosition () {
 		return "[" + (position[0]+1) + " , " + (position[1]+1) + "]";
 	}
+	
+	public String toString () {
+		return this.textPosition() + " : " + this.getValue();
+	}
 }
