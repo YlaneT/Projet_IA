@@ -101,10 +101,10 @@ public class OthelloGame implements Cloneable {
 	 * Prépare le plateau de jeu
 	 */
 	public void setBicoloredSquare(){
-		board.cells[(ROWS/2)-1][(COLS/2)-1].set(Value.BLACK);
-		board.cells[ROWS/2][COLS/2].set(Value.BLACK);
-		board.cells[(ROWS/2)-1][COLS/2].set(Value.WHITE);
-		board.cells[ROWS/2][(COLS/2)-1].set(Value.WHITE);
+		board.cells[(ROWS/2)-1][(COLS/2)-1].set(Value.WHITE);
+		board.cells[ROWS/2][COLS/2].set(Value.WHITE);
+		board.cells[(ROWS/2)-1][COLS/2].set(Value.BLACK);
+		board.cells[ROWS/2][(COLS/2)-1].set(Value.BLACK);
 	}
 	
 	
