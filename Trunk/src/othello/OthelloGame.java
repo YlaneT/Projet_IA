@@ -462,7 +462,7 @@ public class OthelloGame implements Cloneable {
 	}
 	public void menu_IA () {
 		String format;
-		if (this.gameType == 1) {
+		if (this.gameType == 2) {
 			format = "de l'";
 		}
 		else {
