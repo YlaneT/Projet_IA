@@ -2,14 +2,16 @@ package src.IA;
 
 import src.othello.OthelloGame;
 import src.othello.Value;
-
 import java.util.ArrayList;
 import java.util.Random;
 
 public class IA3 extends Intelligences_Artificielles {
 	
-	public IA3 (Value ia_color, OthelloGame game) {
+	private boolean max_or_min;
+	
+	public IA3 (Value ia_color, OthelloGame game, boolean m_o_m) {
 		super(ia_color, game);
+		this.max_or_min = m_o_m;
 	}
 	
 	@Override
@@ -26,7 +28,7 @@ public class IA3 extends Intelligences_Artificielles {
 	/**
 	 * @return Retourne le pire coup et privilégie les coins en cas d'égalité d'utilités
 	 */
-	public Choix worst_move(){
+	public Choix worst_move () {
 		if (choices_available.size() == 1) {
 			return choices_available.get(0);
 		}
@@ -61,5 +63,20 @@ public class IA3 extends Intelligences_Artificielles {
 		}
 		int rand = new Random().nextInt(choices_available.size());
 		return choices_available.get(rand);
+	}
+	
+	@Override
+	public int [] playTurn () {
+		maj_IA();
+		rsch_choices();
+		show_choices();
+		Choix played;
+		if (max_or_min) {
+			played = best_move();
+		}
+		else {
+			played = worst_move();
+		}
+		return played.getPosition();
 	}
 }

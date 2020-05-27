@@ -4,10 +4,10 @@ import src.othello.OthelloGame;
 
 public class Choix {
 	
-	private int [] position;
-	private int value;
-	private static OthelloGame game;
-	private OthelloGame game_copy;
+	protected int [] position;
+	protected int value;
+	protected static OthelloGame game;
+	protected OthelloGame game_copy;
 	
 	
 	/**
@@ -68,16 +68,6 @@ public class Choix {
 		this.value = game_copy.getBoard().countColor_IA2(game_copy.getTurn());
 		
 	}
-	
-	public void setValue_IA3 () {
-		int row = this.position[0];
-		int col = this.position[1];
-		
-		this.game_copy.tryToFlip(row,col,false);
-		
-		this.value = game_copy.getBoard().countColor_IA2(game_copy.getTurn());
-	}
-	
 	
 	public static void setGame (OthelloGame partie) {
 		game = partie;

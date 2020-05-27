@@ -33,7 +33,7 @@ public abstract class Intelligences_Artificielles {
 	protected abstract void rsch_choices ();
 	
 	
-	private void show_choices () {
+	protected void show_choices () {
 		System.out.println("Choix possibles :");
 		for (Choix c : choices_available) {
 			System.out.println(c);

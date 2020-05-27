@@ -1,5 +1,6 @@
 package src.othello;
 
+import src.IA.IA3;
 import src.IA.Intelligences_Artificielles;
 import src.IA.IA1;
 import src.IA.IA2;
@@ -169,23 +170,22 @@ public class OthelloGame implements Cloneable {
 	
 	public void makeMove() {
 		boolean isValidInput = false;
+		int [] move = new int [2];
+		if (turn == iaA.getIa_color() || turn == iaB.getIa_color()) {
+			if (turn == iaA.getIa_color()) {
+				iaA.maj_IA();
+				move = iaA.playTurn();
+			}
+			else if (turn == iaB.getIa_color()) {
+				iaB.maj_IA();
+				move = iaB.playTurn();
+			}
+			
+			int row = move[0];
+			int col = move[1];
+			tryToFlip(row, col, false);
+		}
 		
-		if (turn == iaA.getIa_color()) {
-			iaA.maj_IA();
-			int [] move = iaA.playTurn();
-			
-			int row = move[0];
-			int col = move[1];
-			tryToFlip(row,col,false);
-		}
-		else if  (turn == iaB.getIa_color()) {
-			iaB.maj_IA();
-			int [] move = iaB.playTurn();
-			
-			int row = move[0];
-			int col = move[1];
-			tryToFlip(row,col,false);
-		}
 		else { // Tour de l'humain
 			while (!isValidInput) {
 				int row = getBoundedNumber("Row", 1, ROWS);
@@ -434,6 +434,18 @@ public class OthelloGame implements Cloneable {
 	public Value getTurn() {
 		return turn;
 	}
+	public Value getOtherTurn() {
+		if (turn == Value.BLACK) {
+			return Value.WHITE;
+		}
+		else if (turn == Value.WHITE) {
+			return Value.BLACK;
+		}
+		else {
+			System.err.println("Fonction getOtherTurn\nParamètre incorrect : turn");
+			return Value.BLANK;
+		}
+	}
 	public int getGameType () {
 		return gameType;
 	}
@@ -469,10 +481,10 @@ public class OthelloGame implements Cloneable {
 			format = "des ";
 		}
 		System.out.println("- - - - - - Menu des IA - - - - - -");
-		System.out.format("Choisissez le type %sIA (1 ou 2) :\n",format);
+		System.out.format("Choisissez le type %sIA (1 à 3) :\n",format);
 		switch (this.gameType) {
 			case 2 :
-				int ia = getBoundedNumber("Type d'IA", 1,2);
+				int ia = getBoundedNumber("Type d'IA", 1,3);
 				switch (ia){
 					case 0 :
 						this.iaA = new IA1(Value.WHITE, this);
@@ -480,12 +492,15 @@ public class OthelloGame implements Cloneable {
 					case 1 :
 						this.iaA = new IA2(Value.WHITE, this);
 						break;
+					case 2 :
+						this.iaA = new IA3(Value.WHITE, this, true);
+						break;
 				}
 				//Empêche les nullPointerException
 				iaB = new IA1(Value.BLANK,this);
 				break;
 			case 3 :
-				ia = getBoundedNumber("Type de l'IA noire", 1,2);
+				ia = getBoundedNumber("Type de l'IA noire", 1,3);
 				switch (ia){
 					case 0 :
 						this.iaA = new IA1(Value.BLACK, this);
@@ -493,15 +508,21 @@ public class OthelloGame implements Cloneable {
 					case 1 :
 						this.iaA = new IA2(Value.BLACK, this);
 						break;
+					case 2 :
+						this.iaB = new IA3(Value.WHITE, this, true);
+						break;
 				}
 				
-				ia = getBoundedNumber("Type de l'IA blanche", 1,2);
+				ia = getBoundedNumber("Type de l'IA blanche", 1,3);
 				switch (ia){
 					case 0 :
 						this.iaB = new IA1(Value.WHITE, this);
 						break;
 					case 1 :
 						this.iaB = new IA2(Value.WHITE, this);
+						break;
+					case 2 :
+						this.iaB = new IA3(Value.WHITE, this, true);
 						break;
 				}
 				break;
@@ -512,5 +533,9 @@ public class OthelloGame implements Cloneable {
 	
 	public void setGameType(int type) {
 		this.gameType = type;
+	}
+	
+	public void create_IA3_for_MIN_MAX (boolean max_or_min) {
+		this.iaA = new IA3(this.turn, this, max_or_min);
 	}
 }
