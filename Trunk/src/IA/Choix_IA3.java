@@ -1,41 +1,27 @@
 package src.IA;
 
 import src.othello.OthelloGame;
+import java.util.ArrayList;
 
-public class Choix {
+public class Choix_IA3 extends Choix{
 	
 	private int [] position;
 	private int value;
 	private static OthelloGame game;
 	private OthelloGame game_copy;
+	private ArrayList<Choix> enemy_choices;
+	private boolean max_min;
 	
-	
-	/**
-	 * Crée une instance de type choix représentant un endroit où l'IA peut jouer avec une valeur
-	 * représentant l'utilité.
-	 * @param r : ligne 
-	 * @param c : colonne
-	 */
-	public Choix (int r, int c, int numIA) {
+	public Choix_IA3 (int r, int c, boolean min_or_max) {
+		super();
 		this.position = new int [2];
 		this.position[0] = r;
 		this.position[1] = c;
-		this.game_copy = new OthelloGame(Choix.game);
-		switch (numIA) {
-			case 1 :
-				this.setValue_IA1();
-				break;
-			case 2 :
-				this.setValue_IA2();
-				break;
-			default :
-				System.err.println("Constructeur Choix\nParamètre incorrect : numIA");
-				break;
-		}
-		
+		this.game_copy = new OthelloGame(Choix_IA3.game);
+		this.enemy_choices = new ArrayList<>();
+		this.max_min = min_or_max;
+		this.setValue_IA3();
 	}
-	
-	public Choix () {}
 	
 	public int[] getPosition () {
 		return position;
@@ -46,28 +32,13 @@ public class Choix {
 	}
 	
 	// Joue le pion puis compte le nombre de pions de sa couleur.
-	public void setValue_IA1 () {
-		int row = this.position[0];
-		int col = this.position[1];
-		
-		this.game_copy.tryToFlip(row,col,false);
-		
-		this.value = game_copy.getBoard().countColor(game_copy.getTurn());
-	}
+
 	
 	/* Joue le pion,
 	   cherche les choix possibles du joueur adverse
 	   calcule leur utilité en faisant 100-util_IA1
 	 */
-	public void setValue_IA2 () {
-		int row = this.position[0];
-		int col = this.position[1];
-		
-		this.game_copy.tryToFlip(row,col,false);
-		
-		this.value = game_copy.getBoard().countColor_IA2(game_copy.getTurn());
-		
-	}
+
 	
 	public void setValue_IA3 () {
 		int row = this.position[0];
@@ -77,7 +48,6 @@ public class Choix {
 		
 		this.value = game_copy.getBoard().countColor_IA2(game_copy.getTurn());
 	}
-	
 	
 	public static void setGame (OthelloGame partie) {
 		game = partie;
@@ -90,4 +60,5 @@ public class Choix {
 	public String toString () {
 		return this.textPosition() + " : " + this.getValue();
 	}
+	
 }

@@ -4,6 +4,7 @@ import src.othello.OthelloGame;
 import src.othello.Value;
 
 public class IA1 extends Intelligences_Artificielles {
+	
 	public IA1 (Value ia_color, OthelloGame game) {
 		super(ia_color, game);
 	}

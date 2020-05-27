@@ -2,8 +2,6 @@ package src.IA;
 
 import src.othello.OthelloGame;
 import src.othello.Value;
-
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -25,6 +23,7 @@ public abstract class Intelligences_Artificielles {
 		this.ia_color = ia_color;
 		this.game = game;
 		Choix.setGame(game);
+		Choix_IA3.setGame(game);
 	}
 	
 	public void maj_IA (){
