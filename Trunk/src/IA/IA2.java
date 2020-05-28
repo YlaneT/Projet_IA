@@ -11,10 +11,10 @@ public class IA2 extends Intelligences_Artificielles {
 	
 	@Override
 	protected void rsch_choices () {
-		for (int r = 0 ; r < game.getROWS(); r++){
-			for (int c = 0 ; c < game.getCOLS(); c++){
+		for (int r = 0 ; r < game.getROWS() ; r++) {
+			for (int c = 0 ; c < game.getCOLS() ; c++) {
 				if (game.getBoard().cells[r][c].value == Value.BLANK && game.tryToFlip(r, c, true)) {
-					choices_available.add(new Choix(r, c,2));
+					choices_available.add(new Choix(r, c, 2));
 				}
 			}
 		}

@@ -4,38 +4,41 @@ import src.othello.OthelloGame;
 
 public class Choix {
 	
-	protected int [] position;
-	protected int value;
 	protected static OthelloGame game;
+	protected int value;
+	protected int[] position;
 	protected OthelloGame game_copy;
 	
 	
 	/**
-	 * Crée une instance de type choix représentant un endroit où l'IA peut jouer avec une valeur
-	 * représentant l'utilité.
-	 * @param r : ligne 
+	 * Crée une instance de type choix représentant un endroit où l'IA peut jouer avec une valeur représentant l'utilité.
+	 *
+	 * @param r : ligne
 	 * @param c : colonne
 	 */
 	public Choix (int r, int c, int numIA) {
-		this.position = new int [2];
+		this.position = new int[2];
 		this.position[0] = r;
 		this.position[1] = c;
 		this.game_copy = new OthelloGame(Choix.game);
 		switch (numIA) {
-			case 1 :
+			case 1:
 				this.setValue_IA1();
 				break;
-			case 2 :
+			case 2:
 				this.setValue_IA2();
 				break;
-			default :
+			default:
 				System.err.println("Constructeur Choix\nParamètre incorrect : numIA");
 				break;
 		}
-		
 	}
 	
 	public Choix () {}
+	
+	public static void setGame (OthelloGame partie) {
+		game = partie;
+	}
 	
 	public int[] getPosition () {
 		return position;
@@ -50,7 +53,7 @@ public class Choix {
 		int row = this.position[0];
 		int col = this.position[1];
 		
-		this.game_copy.tryToFlip(row,col,false);
+		this.game_copy.tryToFlip(row, col, false);
 		
 		this.value = game_copy.getBoard().countColor(game_copy.getTurn());
 	}
@@ -63,18 +66,13 @@ public class Choix {
 		int row = this.position[0];
 		int col = this.position[1];
 		
-		this.game_copy.tryToFlip(row,col,false);
+		this.game_copy.tryToFlip(row, col, false);
 		
 		this.value = game_copy.getBoard().countColor_IA2(game_copy.getTurn());
-		
-	}
-	
-	public static void setGame (OthelloGame partie) {
-		game = partie;
 	}
 	
 	public String textPosition () {
-		return "[" + (position[0]+1) + " , " + (position[1]+1) + "]";
+		return "[" + (position[0] + 1) + " , " + (position[1] + 1) + "]";
 	}
 	
 	public String toString () {

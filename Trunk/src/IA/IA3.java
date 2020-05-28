@@ -1,8 +1,8 @@
 package src.IA;
 
 import src.othello.OthelloGame;
-import src.othello.Value;
 import java.util.ArrayList;
+import src.othello.Value;
 import java.util.Random;
 
 public class IA3 extends Intelligences_Artificielles {
@@ -16,8 +16,8 @@ public class IA3 extends Intelligences_Artificielles {
 	
 	@Override
 	protected void rsch_choices () {
-		for (int r = 0; r < game.getROWS(); r++) {
-			for (int c = 0; c < game.getCOLS(); c++) {
+		for (int r = 0 ; r < game.getROWS() ; r++) {
+			for (int c = 0 ; c < game.getCOLS() ; c++) {
 				if (game.getBoard().cells[r][c].value == Value.BLANK && game.tryToFlip(r, c, true)) {
 					choices_available.add(new Choix_IA3(r, c, true));
 				}
@@ -33,12 +33,12 @@ public class IA3 extends Intelligences_Artificielles {
 			return choices_available.get(0);
 		}
 		
-		int min = 0 ;
-		ArrayList<Integer> start_end = new ArrayList<Integer>();
+		int                min       = 0;
+		ArrayList<Integer> start_end = new ArrayList<>();
 		start_end.add(0);
-		start_end.add(game.getROWS()-1);
+		start_end.add(game.getROWS() - 1);
 		
-		for (int i = 0; i < choices_available.size() ; i++) {
+		for (int i = 0 ; i < choices_available.size() ; i++) {
 			if (choices_available.get(i).getValue() <= min) {
 				min = choices_available.get(i).getValue();
 			}
@@ -48,8 +48,8 @@ public class IA3 extends Intelligences_Artificielles {
 			}
 		}
 		
-		for (int i = 0; i < choices_available.size() ; i++) {
-			if (choices_available.get(i).getValue() == min ){
+		for (int i = 0 ; i < choices_available.size() ; i++) {
+			if (choices_available.get(i).getValue() == min) {
 				if (start_end.contains(choices_available.get(i).getPosition()[0])) {
 					if (start_end.contains(choices_available.get(i).getPosition()[1])) {
 						return choices_available.get(i);
@@ -66,7 +66,7 @@ public class IA3 extends Intelligences_Artificielles {
 	}
 	
 	@Override
-	public int [] playTurn () {
+	public int[] playTurn () {
 		maj_IA();
 		rsch_choices();
 		show_choices();
