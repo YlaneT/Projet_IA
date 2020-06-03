@@ -6,8 +6,8 @@ import src.othello.Value;
 import java.util.Random;
 
 /**
- * Cette classe contient une Intelligence artificielle de type Agent focalisé sur l'utilité qui choisit chacun de ses coups de la manière suivante : Prendre un coin +5 N pions en plus par rapport au
- * tour précédent +N
+ * Cette classe abstraite contient une Intelligence artificielle de type Agent focalisé sur l'utilité.
+ * Elle est la base sur laquelle reposent toutes les IA.
  */
 public abstract class Intelligences_Artificielles {
 	
@@ -23,13 +23,19 @@ public abstract class Intelligences_Artificielles {
 		Choix_IA3.setGame(game);
 	}
 	
+	/**
+	 * Efface les choix possibles créés au tour précédent.
+	 */
 	public void maj_IA () {
 		choices_available.clear();
 	}
 	
 	protected abstract void rsch_choices ();
 	
-	
+	/**
+	 * Affiche les différents choix possibles à l'écran sous la forme
+	 * "[row , col] : valeur"
+	 */
 	protected void show_choices () {
 		System.out.println("Choix possibles :");
 		for (Choix c: choices_available) {
@@ -79,6 +85,11 @@ public abstract class Intelligences_Artificielles {
 		return choices_available.get(rand);
 	}
 	
+	/**
+	 * Déroulement du tour.
+	 *
+	 * @return renvoie la position à laquelle l'IA décide de jouer à OthelloGame.
+	 */
 	public int[] playTurn () {
 		maj_IA();
 		rsch_choices();

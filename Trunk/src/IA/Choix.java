@@ -36,19 +36,18 @@ public class Choix {
 	
 	public Choix () {}
 	
+	/**
+	 * Détermine la partie à copier dans chaque choix
+	 *
+	 * @param partie à copier
+	 */
 	public static void setGame (OthelloGame partie) {
 		game = partie;
 	}
 	
-	public int[] getPosition () {
-		return position;
-	}
-	
-	public int getValue () {
-		return value;
-	}
-	
-	// Joue le pion puis compte le nombre de pions de sa couleur.
+	/**
+	 * 	Joue le pion puis compte le nombre de pions de sa couleur.
+ 	 */
 	public void setValue_IA1 () {
 		int row = this.position[0];
 		int col = this.position[1];
@@ -58,9 +57,11 @@ public class Choix {
 		this.value = game_copy.getBoard().countColor(game_copy.getTurn());
 	}
 	
-	/* Joue le pion,
-	   cherche les choix possibles du joueur adverse
-	   calcule leur utilité en faisant 100-util_IA1
+	/**
+	 *  Joue le pion puis détermine la valeur du coup
+	 *  1 pion = 1 point
+	 *  1 pion sur un bord = 2 points
+	 *  1 pion dans un coin =  3 points
 	 */
 	public void setValue_IA2 () {
 		int row = this.position[0];
@@ -71,11 +72,20 @@ public class Choix {
 		this.value = game_copy.getBoard().countColor_IA2(game_copy.getTurn());
 	}
 	
+	// Deux fonctions permettant l'affichage d'un choix d'une manière compréhensible pour l'utilisateur
 	public String textPosition () {
 		return "[" + (position[0] + 1) + " , " + (position[1] + 1) + "]";
 	}
-	
 	public String toString () {
 		return this.textPosition() + " : " + this.getValue();
 	}
+	
+	public int[] getPosition () {
+		return position;
+	}
+	
+	public int getValue () {
+		return value;
+	}
+	
 }

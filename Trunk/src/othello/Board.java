@@ -4,7 +4,12 @@ public class Board {
 	public Cell[][] cells;
 	int ROWS, COLS, numBlack, numWhite;
 	
-	
+	/**
+	 * Création du plateau de jeu.
+	 *
+	 * @param row nombre de lignes
+	 * @param col nombre de colonnes
+	 */
 	public Board (int row, int col) {
 		this.ROWS = row;
 		this.COLS = col;
@@ -16,6 +21,9 @@ public class Board {
 		}
 	}
 	
+	/**
+	 * Création d'une copie d'un plateau de jeu.
+	 */
 	@SuppressWarnings("CopyConstructorMissesField")
 	public Board (Board board) {
 		ROWS = board.ROWS;
@@ -29,6 +37,9 @@ public class Board {
 		}
 	}
 	
+	/**
+	 * Affichage du plateau
+	 */
 	public void draw () {
 		System.out.print("\t");
 		for (int c = 0 ; c < COLS ; c++) {
@@ -49,31 +60,7 @@ public class Board {
 		System.out.format("%nBlack: %d%nWhite: %d%n%n", numBlack, numWhite);
 	}
 	
-	
-	public int countBlacks () {
-		int count = 0;
-		for (int r = 0 ; r < ROWS ; r++) {
-			for (int c = 0 ; c < COLS ; c++) {
-				if (cells[r][c].value == Value.BLACK) {
-					count++;
-				}
-			}
-		}
-		return count;
-	}
-	
-	public int countWhites () {
-		int count = 0;
-		for (int r = 0 ; r < ROWS ; r++) {
-			for (int c = 0 ; c < COLS ; c++) {
-				if (cells[r][c].value == Value.WHITE) {
-					count++;
-				}
-			}
-		}
-		return count;
-	}
-	
+	// Trois fonctions permettant de compter le nombre de pions d'une couleur.
 	public int countColor (Value couleur) {
 		int count = 0;
 		for (int r = 0 ; r < ROWS ; r++) {
@@ -86,6 +73,20 @@ public class Board {
 		return count;
 	}
 	
+	public int countBlacks () {
+		return countColor(Value.BLACK);
+	}
+	
+	public int countWhites () {
+		return countColor(Value.WHITE);
+	}
+	
+	/**
+	 * Détermine la valeur d'un plateau en fonction d'une couleur d'après IA2
+	 *
+	 * @param couleur à compter
+	 * @return valeur finale
+	 */
 	public int countColor_IA2 (Value couleur) {
 		int count = 0;
 		for (int r = 0 ; r < ROWS ; r++) {
@@ -104,6 +105,10 @@ public class Board {
 		return count;
 	}
 	
+	
+	/**
+	 * Détermine si la grille est pleine ou non.
+	 */
 	/*
 	public boolean fullGrid(){
 		for (int i=0; i<ROWS; i++) {

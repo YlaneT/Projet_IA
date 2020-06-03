@@ -22,8 +22,9 @@ public class OthelloGame implements Cloneable {
 	
 	
 	/**
-	 * Crée une nouvelle partie de Othello en préparant le plateau de jeu classic : si true, plateau de 8x8 et le premier joueur est BLACK, sinon, on peut choisir la taille du carré et le joueur qui
-	 * commence
+	 * Crée une nouvelle partie de Othello
+	 *
+	 * @param gT (gameType) Joueur vs Joueur / Joueur vs IA / IA vs IA
 	 */
 	public OthelloGame (int gT) {
 		this.setGameType(gT);
@@ -70,6 +71,11 @@ public class OthelloGame implements Cloneable {
 		this.playGame();
 	}
 	
+	/**
+	 * Création d'une copie de la partie
+	 *
+	 * @param game partie à copier
+	 */
 	@SuppressWarnings("CopyConstructorMissesField")
 	public OthelloGame (OthelloGame game) {
 		this.state = game.getState();
@@ -84,6 +90,11 @@ public class OthelloGame implements Cloneable {
 		in = new Scanner(System.in);
 	}
 	
+	/**
+	 * Menu demandant une valeur en entrée jusqu'à ce qu'elle soit valide.
+	 *
+	 * @return la valeur entrée moins 1 (pour tableau)
+	 */
 	public static int getBoundedNumber (String what, int min, int max) {
 		// boolean isValid = false;
 		do {
@@ -98,6 +109,9 @@ public class OthelloGame implements Cloneable {
 		} while (true); // while (!isValid)
 	}
 	
+	/**
+	 * Menu d'initialisation de la partie.
+	 */
 	public static void menu () {
 		int type;
 		System.out.println("- - - - - - Menu - - - - - -");
@@ -121,12 +135,74 @@ public class OthelloGame implements Cloneable {
 		}
 	}
 	
+	/**
+	 * Menu d'initialisation des IA.
+	 */
+	public void menu_IA () {
+		String format;
+		if (this.gameType == 2) {
+			format = "de l'";
+		}
+		else {
+			format = "des ";
+		}
+		System.out.println("- - - - - - Menu des IA - - - - - -");
+		System.out.format("Choisissez le type %sIA (1 à 3) :\n", format);
+		switch (this.gameType) {
+			case 2:
+				int ia = getBoundedNumber("Type d'IA", 1, 3);
+				switch (ia) {
+					case 0:
+						this.iaA = new IA1(Value.WHITE, this);
+						break;
+					case 1:
+						this.iaA = new IA2(Value.WHITE, this);
+						break;
+					case 2:
+						this.iaA = new IA3(Value.WHITE, this, true);
+						break;
+				}
+				//Empêche les nullPointerException
+				iaB = new IA1(Value.BLANK, this);
+				break;
+			case 3:
+				ia = getBoundedNumber("Type de l'IA noire", 1, 3);
+				switch (ia) {
+					case 0:
+						this.iaA = new IA1(Value.BLACK, this);
+						break;
+					case 1:
+						this.iaA = new IA2(Value.BLACK, this);
+						break;
+					case 2:
+						this.iaB = new IA3(Value.WHITE, this, true);
+						break;
+				}
+				
+				ia = getBoundedNumber("Type de l'IA blanche", 1, 3);
+				switch (ia) {
+					case 0:
+						this.iaB = new IA1(Value.WHITE, this);
+						break;
+					case 1:
+						this.iaB = new IA2(Value.WHITE, this);
+						break;
+					case 2:
+						this.iaB = new IA3(Value.WHITE, this, true);
+						break;
+				}
+				break;
+			default:
+				break;
+		}
+	}
+	
 	private GameState getState () {
 		return this.state;
 	}
 	
 	/**
-	 * Prépare le plateau de jeu
+	 * Préparation du plateau de jeu pour une nouvelle partie.
 	 */
 	public void setBicoloredSquare () {
 		board.cells[(ROWS / 2) - 1][(COLS / 2) - 1].set(Value.WHITE);
@@ -135,22 +211,25 @@ public class OthelloGame implements Cloneable {
 		board.cells[ROWS / 2][(COLS / 2) - 1].set(Value.BLACK);
 	}
 	
+	/**
+	 * Déroulement de la partie.
+	 */
 	public void playGame () {
 		do {
 			board.draw();
 			if (!canPlay()) {
-				System.out.println(turn + " cannot make a move!");
+				System.out.println(turn + " ne peut pas jouer !");
 				changeTurn();
 				if (!canPlay()) {
 					determineWinner();
 					return;
 				}
 				else {
-					System.out.println("It is " + turn + "'s turn again.");
+					System.out.println("C'est le tour de " + turn + " à nouveau.");
 				}
 			}
 			else {
-				System.out.format("%s's turn.%n", turn);
+				System.out.format("Tour de %s.%n", turn);
 			}
 			makeMove();
 			changeTurn();
@@ -184,23 +263,27 @@ public class OthelloGame implements Cloneable {
 	public void determineWinner () {
 		if (board.countBlacks() > board.countWhites()) {
 			state = GameState.BLACK_WIN;
-			System.out.println("Black wins!");
+			System.out.println("Black gagne!");
 		}
 		else if (board.countBlacks() < board.countWhites()) {
 			state = GameState.WHITE_WIN;
-			System.out.println("White wins!");
+			System.out.println("White gagne!");
 		}
 		else {
 			state = GameState.DRAW;
-			System.out.println("It's a draw!");
+			System.out.println("Egalité !");
 		}
 		// TODO : Créer un log pour faire des statistiques
 		replay();
 	}
 	
+	/**
+	 * Détermination du choix du joueur.
+	 */
 	public void makeMove () {
 		boolean isValidInput = false;
 		int[]   move         = new int[2];
+		// Tour des IA
 		if (turn == iaA.getIa_color() || turn == iaB.getIa_color()) {
 			if (turn == iaA.getIa_color()) {
 				iaA.maj_IA();
@@ -225,14 +308,14 @@ public class OthelloGame implements Cloneable {
 					isValidInput = true;
 				}
 				else {
-					System.out.println("Illegal move.");
+					System.out.println("Impossible de jouer ici.");
 				}
 			}
 		}
 	}
 	
 	/**
-	 * @return if the current player can make a move somewhere.
+	 * @return si le joueur dont c'est le tour peut jouer quelque part ou non.
 	 */
 	public boolean canPlay () {
 		for (int r = 0 ; r < ROWS ; r++) {
@@ -248,8 +331,6 @@ public class OthelloGame implements Cloneable {
 	/**
 	 * Place un pion d'une couleur donnée à une position donnée
 	 *
-	 * @param row : ligne
-	 * @param col : colonne
 	 * @param val : couleur
 	 */
 	public void putDisc (int row, int col, Value val) {
@@ -263,6 +344,12 @@ public class OthelloGame implements Cloneable {
 		turn = (turn == Value.BLACK ? Value.WHITE : Value.BLACK);
 	}
 	
+	/**
+	 * Détermine si le joueur dont c'est le tour peut jouer à une position donnée ou Joue à une position donnée.
+	 *
+	 * @param dontFlip si false, retourne les pions adverse.
+	 * @return s'il est possible de jouer à la position donnée
+	 */
 	public boolean tryToFlip (int row, int col, boolean dontFlip) {
 		boolean hasFlipped = false;
 		Value   opposite   = (turn == Value.BLACK ? Value.WHITE : Value.BLACK);
@@ -441,25 +528,31 @@ public class OthelloGame implements Cloneable {
 		return hasFlipped;
 	}
 	
+	/**
+	 * Détermine le joueur qui commence le premier si pas partie classique.
+	 */
 	public void setStartingPlayer () {
 		boolean isValidInput = false;
-		System.out.print("Who starts? ");
+		System.out.print("Qui commence ? ");
 		while (!isValidInput) {
-			String start = in.next();
+			String start = in.next().substring(0,1);
 			if (start.equalsIgnoreCase("b") || start.equalsIgnoreCase("w")) {
 				isValidInput = true;
 				turn = (start.equalsIgnoreCase("b") ? Value.BLACK : Value.WHITE);
 			}
 			else {
-				System.out.println("Please type 'b' or 'w'.");
+				System.out.println("Entrez 'b' pour black ou 'w' pour white.");
 			}
 		}
 	}
 	
+	/**
+	 * Détermine le nombre de lignes et de colonnes si pas partie classique.
+	 */
 	public void setRowsAndColumns () {
 		boolean isValidInput = false;
 		while (!isValidInput) {
-			System.out.print("How many rows and columns  ? ");
+			System.out.print("Combien de lignes et de colonnes  ? ");
 			int choice = in.nextInt();
 			if (choice % 2 == 0) {
 				isValidInput = true;
@@ -467,7 +560,7 @@ public class OthelloGame implements Cloneable {
 				COLS = choice;
 			}
 			else {
-				System.out.println("Must be an even integer.");
+				System.out.println("Entrez un chiffre pair.");
 			}
 		}
 	}
@@ -489,16 +582,11 @@ public class OthelloGame implements Cloneable {
 	}
 	
 	public Value getOtherTurn () {
-		if (turn == Value.BLACK) {
-			return Value.WHITE;
-		}
-		else if (turn == Value.WHITE) {
-			return Value.BLACK;
-		}
-		else {
+		if (turn == Value.BLANK) {
 			System.err.println("Fonction getOtherTurn\nParamètre incorrect : turn");
 			return Value.BLANK;
 		}
+		return turn == Value.WHITE ? Value.BLACK : Value.WHITE;
 	}
 	
 	public int getGameType () {
@@ -507,65 +595,6 @@ public class OthelloGame implements Cloneable {
 	
 	public void setGameType (int type) {
 		this.gameType = type;
-	}
-	
-	public void menu_IA () {
-		String format;
-		if (this.gameType == 2) {
-			format = "de l'";
-		}
-		else {
-			format = "des ";
-		}
-		System.out.println("- - - - - - Menu des IA - - - - - -");
-		System.out.format("Choisissez le type %sIA (1 à 3) :\n", format);
-		switch (this.gameType) {
-			case 2:
-				int ia = getBoundedNumber("Type d'IA", 1, 3);
-				switch (ia) {
-					case 0:
-						this.iaA = new IA1(Value.WHITE, this);
-						break;
-					case 1:
-						this.iaA = new IA2(Value.WHITE, this);
-						break;
-					case 2:
-						this.iaA = new IA3(Value.WHITE, this, true);
-						break;
-				}
-				//Empêche les nullPointerException
-				iaB = new IA1(Value.BLANK, this);
-				break;
-			case 3:
-				ia = getBoundedNumber("Type de l'IA noire", 1, 3);
-				switch (ia) {
-					case 0:
-						this.iaA = new IA1(Value.BLACK, this);
-						break;
-					case 1:
-						this.iaA = new IA2(Value.BLACK, this);
-						break;
-					case 2:
-						this.iaB = new IA3(Value.WHITE, this, true);
-						break;
-				}
-				
-				ia = getBoundedNumber("Type de l'IA blanche", 1, 3);
-				switch (ia) {
-					case 0:
-						this.iaB = new IA1(Value.WHITE, this);
-						break;
-					case 1:
-						this.iaB = new IA2(Value.WHITE, this);
-						break;
-					case 2:
-						this.iaB = new IA3(Value.WHITE, this, true);
-						break;
-				}
-				break;
-			default:
-				break;
-		}
 	}
 	
 	public void create_IA3_for_MIN_MAX (boolean max_or_min) {

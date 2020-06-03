@@ -7,6 +7,13 @@ public class Choix_IA3 extends Choix {
 	
 	private boolean max_min;
 	
+	/**
+	 * Crée une instance de type choix représentant un endroit où l'IA peut jouer avec une valeur représentant l'utilité.
+	 *
+	 * @param r          ligne
+	 * @param c          colonne
+	 * @param min_or_max true : max (couleur de l'ia) / false : tour de l'adversaire
+	 */
 	public Choix_IA3 (int r, int c, boolean min_or_max) {
 		super();
 		this.position = new int[2];

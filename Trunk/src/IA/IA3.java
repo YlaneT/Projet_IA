@@ -14,6 +14,9 @@ public class IA3 extends Intelligences_Artificielles {
 		this.max_or_min = m_o_m;
 	}
 	
+	/**
+	 * Crée des choix en fonction de là où l'IA peut jouer.
+	 */
 	@Override
 	protected void rsch_choices () {
 		for (int r = 0 ; r < game.getROWS() ; r++) {
@@ -26,6 +29,8 @@ public class IA3 extends Intelligences_Artificielles {
 	}
 	
 	/**
+	 * Reourne le pire coup pour l'algorithme MIN/MAX
+	 *
 	 * @return Retourne le pire coup et privilégie les coins en cas d'égalité d'utilités
 	 */
 	public Choix worst_move () {
